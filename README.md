@@ -31,3 +31,7 @@ Installation and Setup:
 
 
 Contribution Guidelines for Team Members:
+- Everyone contributes their share to the assignment equally; No one person completes everything.
+- Team members will communicate and help each other out when needed.
+- Team members will make sure all code is functional and follow assignment guidelines.
+- Team members will check in to make sure progress is being made.
