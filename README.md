@@ -28,3 +28,6 @@ Installation and Setup:
 2. Enter the src folder, and click on the file named "Function_Library.py"
 3. Create a python virtual environment that allows users to run their code (VS Code)
 4. Copy and paste all functions in the function_library.py file, and run the code. Respond in the terminal in order for the code to work and be utilized. 
+
+
+Contribution Guidelines for Team Members:
