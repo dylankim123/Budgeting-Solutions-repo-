@@ -27,7 +27,14 @@ Installation and Setup:
 1. Access our repository link (submitted in the Project 01: Function Library Assignment)
 2. Enter the src folder, and click on the file named "Function_Library.py"
 3. Create a python virtual environment that allows users to run their code (VS Code)
-4. Copy and paste all functions in the function_library.py file, and run the code. Respond in the terminal in order for the code to work and be utilized. 
+4. Copy and paste all functions in the function_library.py file, and run the code. Respond in the terminal in order for the code to work and be utilized.
+
+Function Library Overview:
+username_creation() = Prompts and saves a username to users.txt
+calculate_money_available_after_tax() = Calculates post-tax salary
+track_monthly_spending() = Logs spending records
+get_most_frequent_transaction_category() = Finds the most common spending category
+what_state() = Validates a U.S. state for tax calculation
 
 
 Contribution Guidelines for Team Members:
