@@ -1,4 +1,4 @@
-#Create User ID ---1
+#Create User ID 
 import os
 import random
 
@@ -58,7 +58,7 @@ def get_numeric_input(prompt):
 
 
 
-#User input monthly income---2
+#User input monthly income
 income = input("Please enter your income for this month: ")
 income = float(income)
 #User input monthly spending
@@ -82,7 +82,7 @@ print(f"\n You have spent a total of ${total_category_spending:.2f} this month."
 
 
 
-#Arrange month and year ---3
+#Arrange month and year 
 #What month's budget are you trying to input? For logging purposes
 def what_month():
     while True:
@@ -127,7 +127,7 @@ def purchase_category():
 
 
 
-#Input state to determine state taxes---4
+#Input state to determine state taxes
 #Ask for state that  the user lives in to deduct state taxes and log monthly budget.
 states = ["Alabama", "Alaska", "Arizona" "Arkansas", "California", "Colorado",
 "Connecticut", "Delaware", "Florida","Georgia", "Hawaii", "Idaho","Illinois","Indiana",
@@ -147,7 +147,7 @@ def what_state():
 
 
 
-#Calculate tax + income after taxes---5
+#Calculate tax + income after taxes
 #Calculates the money available after tax and validates inputs
 def calculate_money_available_after_tax(salary, tax_rate):
     if salary < 0: 
