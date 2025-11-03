@@ -11,8 +11,8 @@ US_STATES = {s.strip() for s in (
 ).split(",")}
 
 class User:
-    """User account with validation and file-based uniqueness."""
-
+    """This class represents a user and makes a unique username."""
+#Cleans and validates username, checks if username exists, and creates/validates user name
     def __init__(self, username: str, state: Optional[str] = None,
                  user_id: Optional[str] = None, storage_path: str = "users.txt") -> None:
         self._storage_path = storage_path
