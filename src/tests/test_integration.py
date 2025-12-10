@@ -1,60 +1,106 @@
 import unittest
+import sys
 from pathlib import Path
 import tempfile
 import shutil
-from classes.User import User
-from classes.Transaction import Transaction
-from classes.BudgetAnalyzer import BudgetAnalyzer
+
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
+
+from Function_Library import (
+    calculate_money_available_after_tax,
+    get_most_frequent_transaction_category,
+    what_state
+)
+from file_handler import FileHandler  # NEW
+
 
 class TestIntegration(unittest.TestCase):
-    """Integration tests - testing how components work together"""
+    """Integration tests - testing functions working together"""
     
     def setUp(self):
-        """Create temporary directory for test files"""
+        """Set up test environment"""
         self.test_dir = tempfile.mkdtemp()
-        self.file_handler = FileHandler(self.test_dir)
+        self.file_handler = FileHandler(self.test_dir)  # NEW
     
     def tearDown(self):
-        """Clean up temporary directory"""
+        """Clean up test environment"""
         shutil.rmtree(self.test_dir)
     
-    def test_user_save_and_load(self):
-        """Test that user data can be saved and loaded correctly"""
-        user = User("integration_test", "Texas", 6000)
-        user.add_transaction("2024-01-15", "Grocery", 100, "Food")
-        user.add_transaction("2024-01-16", "Gas", 50, "Transport")
+    def test_save_and_load_user_profile(self):
+        """Test saving and loading complete user data"""
+        # Create user data
+        username = "testuser"
+        income = 5000
+        state = "California"
+        transactions = [
+            {"date": "2024-01-15", "description": "Grocery", "amount": 150, "category": "Food"},
+            {"date": "2024-01-16", "description": "Gas", "amount": 50, "category": "Transport"}
+        ]
         
-        self.file_handler.save_user(user)
-        loaded_user = self.file_handler.load_user("integration_test")
+        # Save profile
+        saved_path = self.file_handler.save_user_profile(username, income, state, transactions)
+        self.assertTrue(saved_path.exists())
         
-        self.assertEqual(loaded_user.username, user.username)
-        self.assertEqual(loaded_user.state, user.state)
-        self.assertEqual(len(loaded_user.transactions), 2)
+        # Load profile
+        loaded = self.file_handler.load_user_profile(username)
+        
+        # Verify
+        self.assertEqual(loaded['username'], username)
+        self.assertEqual(loaded['income'], income)
+        self.assertEqual(loaded['state'], state)
+        self.assertEqual(len(loaded['transactions']), 2)
     
-    def test_import_and_analyze_workflow(self):
-        """Test importing CSV and analyzing the data"""
-        csv_path = Path(self.test_dir) / "test_transactions.csv"
-        with open(csv_path, 'w') as f:
+    def test_import_csv_and_analyze(self):
+        """Test importing CSV and analyzing categories"""
+        # Create test CSV
+        csv_path = Path(self.test_dir) / "test.csv"
+        with csv_path.open('w') as f:
             f.write("date,description,amount,category\n")
-            f.write("2024-01-15,Grocery Store,150.00,Food\n")
-            f.write("2024-01-16,Coffee Shop,5.50,Food\n")
-            f.write("2024-01-17,Gas Station,40.00,Transport\n")
+            f.write("2024-01-15,Grocery,150.00,Food\n")
+            f.write("2024-01-16,Coffee,5.50,Food\n")
+            f.write("2024-01-17,Gas,40.00,Transport\n")
         
-        user = User("import_test", "Florida", 5000)
-        transactions = self.file_handler.import_csv(csv_path)
-        for t in transactions:
-            user.add_transaction(t['date'], t['description'], t['amount'], t['category'])
+        # Import
+        transactions = self.file_handler.import_transactions_from_csv(csv_path)
         
-        analyzer = BudgetAnalyzer()
-        most_frequent = analyzer.get_most_frequent_category(user.transactions)
+        # Analyze using your existing function
+        most_frequent = get_most_frequent_transaction_category(transactions)
         
+        # Verify
+        self.assertEqual(len(transactions), 3)
         self.assertEqual(most_frequent, "Food")
-        self.assertEqual(len(user.transactions), 3)
     
-    def test_multi_user_data_integrity(self):
-        """Test that multiple users' data doesn't interfere"""
-        user1 = User("user1", "California", 5000)
-        user1.add_transaction("2024-01-15", "Grocery", 100, "Food")
+    def test_tax_calculation_and_report_export(self):
+        """Test calculating taxes and exporting report"""
+        username = "reportuser"
+        state = "Texas"
+        income = 5000
         
-        user2 = User("user2", "Texas", 6000)
-        user2.add
+        # Calculate after-tax
+        after_tax = calculate_money_available_after_tax(income, state)
+        
+        # Create transactions
+        transactions = [
+            {"date": "2024-01-15", "description": "Rent", "amount": 1200, "category": "Housing"},
+            {"date": "2024-01-20", "description": "Food", "amount": 300, "category": "Food"}
+        ]
+        
+        # Export report
+        report_path = self.file_handler.export_monthly_report(
+            username, 1, 2024, transactions, after_tax
+        )
+        
+        # Verify report exists and has correct data
+        self.assertTrue(report_path.exists())
+        
+        import json
+        with report_path.open('r') as f:
+            report = json.load(f)
+        
+        self.assertEqual(report['username'], username)
+        self.assertEqual(report['total_spent'], 1500)
+        self.assertGreater(report['remaining'], 0)
+
+
+if __name__ == '__main__':
+    unittest.main()
