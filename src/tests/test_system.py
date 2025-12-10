@@ -5,7 +5,6 @@ import tempfile
 import shutil
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 from user import User
-from file_handler import FileHandler
 from budget_analyzer import BudgetAnalyzer
 
 class TestSystem(unittest.TestCase):
