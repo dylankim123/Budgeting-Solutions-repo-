@@ -1,0 +1,20 @@
+class TestIntegration(unittest.TestCase):
+    def test_user_creation_and_transaction_flow(self):
+        """Test creating user and adding transactions"""
+        # Create user
+        # Add income
+        # Add expenses
+        # Verify data is stored correctly
+    
+    def test_save_and_load_workflow(self):
+        """Test saving user data and loading it back"""
+        # Create user with data
+        # Save to file
+        # Load from file
+        # Verify data matches
+    
+    def test_import_and_category_analysis(self):
+        """Test importing CSV and analyzing categories"""
+        # Import transactions from CSV
+        # Run category analysis
+        # Verify most frequent category is correct
