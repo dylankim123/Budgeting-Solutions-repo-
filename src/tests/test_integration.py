@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import shutil
 from classes.User import User
-from classes.transaction import Transaction
+from classes.Transaction import Transaction
 from classes.BudgetAnalyzer import BudgetAnalyzer
 
 class TestIntegration(unittest.TestCase):
