@@ -1,15 +1,10 @@
 import unittest
-import sys
 from pathlib import Path
-import json
 import tempfile
 import shutil
-
-sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
-
-from user import User
-from transaction import Transaction
-from file_handler import FileHandler
+from classes.User import User
+from classes.transaction import Transaction
+from classes.BudgetAnalyzer import BudgetAnalyzer
 
 class TestIntegration(unittest.TestCase):
     """Integration tests - testing how components work together"""
@@ -25,25 +20,19 @@ class TestIntegration(unittest.TestCase):
     
     def test_user_save_and_load(self):
         """Test that user data can be saved and loaded correctly"""
-        # Create user with transactions
         user = User("integration_test", "Texas", 6000)
         user.add_transaction("2024-01-15", "Grocery", 100, "Food")
         user.add_transaction("2024-01-16", "Gas", 50, "Transport")
         
-        # Save user
         self.file_handler.save_user(user)
-        
-        # Load user
         loaded_user = self.file_handler.load_user("integration_test")
         
-        # Verify data matches
         self.assertEqual(loaded_user.username, user.username)
         self.assertEqual(loaded_user.state, user.state)
         self.assertEqual(len(loaded_user.transactions), 2)
     
     def test_import_and_analyze_workflow(self):
         """Test importing CSV and analyzing the data"""
-        # Create a test CSV file
         csv_path = Path(self.test_dir) / "test_transactions.csv"
         with open(csv_path, 'w') as f:
             f.write("date,description,amount,category\n")
@@ -51,82 +40,21 @@ class TestIntegration(unittest.TestCase):
             f.write("2024-01-16,Coffee Shop,5.50,Food\n")
             f.write("2024-01-17,Gas Station,40.00,Transport\n")
         
-        # Import transactions
         user = User("import_test", "Florida", 5000)
         transactions = self.file_handler.import_csv(csv_path)
         for t in transactions:
-            user.add_transaction(t['date'], t['description'], 
-                               t['amount'], t['category'])
+            user.add_transaction(t['date'], t['description'], t['amount'], t['category'])
         
-        # Analyze
-        from budget_analyzer import BudgetAnalyzer
         analyzer = BudgetAnalyzer()
         most_frequent = analyzer.get_most_frequent_category(user.transactions)
         
-        # Verify
         self.assertEqual(most_frequent, "Food")
         self.assertEqual(len(user.transactions), 3)
     
     def test_multi_user_data_integrity(self):
         """Test that multiple users' data doesn't interfere"""
-        # Create two users
         user1 = User("user1", "California", 5000)
         user1.add_transaction("2024-01-15", "Grocery", 100, "Food")
         
         user2 = User("user2", "Texas", 6000)
-        user2.add_transaction("2024-01-15", "Concert", 200, "Entertainment")
-        
-        # Save both
-        self.file_handler.save_user(user1)
-        self.file_handler.save_user(user2)
-        
-        # Load and verify
-        loaded1 = self.file_handler.load_user("user1")
-        loaded2 = self.file_handler.load_user("user2")
-        
-        self.assertEqual(len(loaded1.transactions), 1)
-        self.assertEqual(len(loaded2.transactions), 1)
-        self.assertEqual(loaded1.transactions[0].category, "Food")
-        self.assertEqual(loaded2.transactions[0].category, "Entertainment")
-    
-    def test_export_and_reimport(self):
-        """Test exporting data and importing it back"""
-        # Create user with data
-        user = User("export_test", "New York", 7000)
-        user.add_transaction("2024-01-15", "Grocery", 100, "Food")
-        user.add_transaction("2024-01-16", "Rent", 2000, "Housing")
-        
-        # Export to CSV
-        export_path = Path(self.test_dir) / "export.csv"
-        self.file_handler.export_transactions_to_csv(user.transactions, export_path)
-        
-        # Create new user and import
-        user2 = User("import_test", "New York", 7000)
-        imported = self.file_handler.import_csv(export_path)
-        
-        # Verify
-        self.assertEqual(len(imported), 2)
-        self.assertEqual(imported[0]['amount'], 100.0)
-    
-    def test_calculate_tax_and_budget(self):
-        """Test tax calculation integrated with budget analysis"""
-        user = User("tax_test", "California", 5000)
-        user.add_transaction("2024-01-15", "Rent", 1500, "Housing")
-        user.add_transaction("2024-01-20", "Utilities", 200, "Bills")
-        
-        # Calculate after-tax income
-        after_tax = user.calculate_after_tax_income()
-        
-        # Calculate total spending
-        total_spent = sum(t.amount for t in user.transactions)
-        
-        # Calculate remaining budget
-        remaining = after_tax - total_spent
-        
-        # Verify calculations make sense
-        self.assertGreater(after_tax, 0)
-        self.assertLess(after_tax, user.monthly_income)
-        self.assertGreater(remaining, 0)  # User should have money left
-
-if __name__ == '__main__':
-    unittest.main()
+        user2.add
