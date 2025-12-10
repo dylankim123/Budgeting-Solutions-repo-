@@ -4,7 +4,9 @@ from pathlib import Path
 import json
 import tempfile
 import shutil
+
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
+
 from user import User
 from transaction import Transaction
 from file_handler import FileHandler
