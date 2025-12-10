@@ -1,4 +1,4 @@
-# CSV Import Guide for BudgetBuddy:
+# CSV Import Guide
 
 ## Overview
 **BudgetBuddy can import transaction data from CSV files, making it easy to load bank statements or existing spending records**
