@@ -1,0 +1,7 @@
+date,description,amount,category
+2024-01-15,Valid Transaction,50.00,Food
+2024-01-16,Negative Amount,-25.00,Transport
+,Missing Date,30.00,Food
+2024-01-18,Missing Amount,,Shopping
+2024-01-19,Zero Amount,0.00,Entertainment
+2024-01-20,Another Valid,100.00,Housing
