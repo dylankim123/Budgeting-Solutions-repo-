@@ -1,0 +1,14 @@
+date,description,amount,category
+2024-01-01,Landlord Rent,1200.00,Housing
+2024-01-03,Safeway Grocery,87.65,Food
+2024-01-05,Chevron Gas,42.30,Transport
+2024-01-07,Verizon Wireless,95.00,Utilities
+2024-01-10,CVS Pharmacy,28.99,Health
+2024-01-12,McDonald's,9.45,Food
+2024-01-15,PG&E Electric,118.76,Utilities
+2024-01-17,AMC Theaters,26.00,Entertainment
+2024-01-20,Trader Joe's,64.32,Food
+2024-01-22,Lyft Ride,15.50,Transport
+2024-01-25,State Farm Insurance,150.00,Insurance
+2024-01-27,Best Buy Electronics,299.99,Shopping
+2024-01-30,Olive Garden,45.67,Food
